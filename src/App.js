@@ -11,18 +11,31 @@ const App = () => {
   const [contacts, setContacts] = useState(phoneBook);
   const [showForm, setShowForm] = useState(false);
 
+  const sortContacts = (copyContacts) => {
+    for (let i = 0; i < copyContacts.length; i++) {
+      for (let j = i + 1; j < copyContacts.length; j++) {
+        if (copyContacts[i].name > copyContacts[j].name) {
+          let temp = copyContacts[i];
+          copyContacts[i] = copyContacts[j];
+          copyContacts[j] = temp;
+        }
+      }
+    }
+    setContacts([...copyContacts]);
+  };
+
   const handlesubmit = (e) => {
     e.preventDefault();
     let obj = {};
     if (e.target[0].value !== "" && e.target[1].value !== "") {
       obj = { name: e.target[0].value, number: e.target[1].value };
-      setContacts([...contacts, obj]);
+      sortContacts([...contacts, obj]);
     }
   };
   const handleDelete = (key) => {
     let copyContacts = [...contacts];
     copyContacts.splice(key, 1);
-    setContacts([...copyContacts]);
+    sortContacts([...copyContacts]);
   };
 
   return (
@@ -31,7 +44,6 @@ const App = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-4"></div>
-
           <div className="col-md-4">
             <div className="App">
               <h2 className="header">PhoneBook</h2>
@@ -41,7 +53,9 @@ const App = () => {
                   color: "blue",
                   textDecoration: "underline",
                 }}
-                onClick={() => setShowForm(!showForm)}
+                onClick={() => {
+                  setShowForm(!showForm);
+                }}
               >
                 {showForm ? "Hide Contact Form" : "Create New Contact"}
               </span>
@@ -71,7 +85,6 @@ const App = () => {
                   </form>
                 </div>
               )}
-
               {contacts.map((contact, index) => (
                 <div key={index} className="contacts">
                   <div class="contact-details">
