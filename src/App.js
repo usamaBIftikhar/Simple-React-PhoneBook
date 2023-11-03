@@ -14,10 +14,15 @@ const App = () => {
   const handlesubmit = (e) => {
     e.preventDefault();
     let obj = {};
-    if ((e.target[0].value !== "") & (e.target[1].value !== "")) {
+    if (e.target[0].value !== "" && e.target[1].value !== "") {
       obj = { name: e.target[0].value, number: e.target[1].value };
+      setContacts([...contacts, obj]);
     }
-    setContacts([...contacts, obj]);
+  };
+  const handleDelete = (key) => {
+    let copyContacts = [...contacts];
+    copyContacts.splice(key, 1);
+    setContacts([...copyContacts]);
   };
 
   return (
@@ -68,12 +73,17 @@ const App = () => {
               )}
 
               {contacts.map((contact, index) => (
-                <div className="contacts">
+                <div key={index} className="contacts">
                   <div class="contact-details">
                     <h5>{contact.name}</h5>
                     <p>{contact.number}</p>
                   </div>
-                  <button class="icon-holder">
+                  <button
+                    onClick={() => {
+                      handleDelete(index);
+                    }}
+                    class="icon-holder"
+                  >
                     <i class="delete fa fa-trash"></i>
                   </button>
                   <hr />
