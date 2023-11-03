@@ -11,6 +11,15 @@ const App = () => {
   const [contacts, setContacts] = useState(phoneBook);
   const [showForm, setShowForm] = useState(false);
 
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    let obj = {};
+    if ((e.target[0].value !== "") & (e.target[1].value !== "")) {
+      obj = { name: e.target[0].value, number: e.target[1].value };
+    }
+    setContacts([...contacts, obj]);
+  };
+
   return (
     <div id="main">
       <Intro />
@@ -34,7 +43,7 @@ const App = () => {
 
               {showForm && (
                 <div className="container">
-                  <form className="form">
+                  <form className="form" onSubmit={handlesubmit}>
                     <div className="form-group">
                       <input
                         type="text"
